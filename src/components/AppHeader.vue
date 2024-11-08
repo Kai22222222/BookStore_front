@@ -1,7 +1,7 @@
 <template>
     <header>
     
-        <h2 class="logo">Epic Reads</h2>
+        <h2 class="logo">CBOOKS</h2>
 <nav class="navbar   navigation">
    <div class="nav-item">
 <router-link :to="{ name: 'contactbook' }" style="color: aliceblue;">
@@ -19,11 +19,13 @@ About
 
 </router-link>
 </div>
+<div class ="nav-item2">
 <router-link :to="{ name: 'book.login' }">
     <button  class="btn_login">
 Login
 </button>
 </router-link>
+</div>
 
 
 </nav>

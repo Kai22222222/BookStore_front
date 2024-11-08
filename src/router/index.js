@@ -8,7 +8,7 @@ import SignUp from "@/views/SignUp.vue";
 //route cho Book
 import AddBook from "@/views/AddBook.vue";
 import ListBook from "@/views/ListBook.vue";
-
+import BookDetails from "@/views/BookDetails.vue";
 //route cho Nhà Xuất Bản
 import AddNXB from "@/views/AddNXB.vue";
 import ListNXB from "@/views/ListNXB.vue";
@@ -64,6 +64,12 @@ const routes = [
         name: "nhanvien.add",
         component: AddNhanVien,
     },
+    {
+        path: '/books/:id',
+        name: 'book.details',
+        component: BookDetails, // Make sure this is the component for book details view
+        props: true // Allows route params to be passed as props
+    }
 ];
 
 const router = createRouter({

@@ -1,4 +1,37 @@
 @import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
+
+:root {
+  /* color */
+  --white-color: #fff;
+  --dark-color: #252525;
+  --primary-color: #3b141c;
+  --secondary-color: #f3961c;
+  --light-pink-color: #faf4f5;
+  --medium-gray-color: #ccc;
+
+  /* Font size */
+  --font-size-s: 0.9rem;
+  --font-size-m: 1rem;
+  --font-size-l: 1.12rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+  --font-size-xxxl: 2.3rem;
+
+  /* Font weight */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Border radius */
+  --border-radius-s: 8px;
+  --border-radius-m: 30px;
+  --border-radius-circle: 50%x;
+
+  /* Site max width */
+  --site-max-width: 1300px;
+}
 
 #app {
   max-width: 1280px;
@@ -67,7 +100,7 @@ a,
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 header {
@@ -79,8 +112,8 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 99;
-
+  z-index: 5;
+  background: var(--primary-color);
 }
 
 .logo {
@@ -95,8 +128,9 @@ header {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  margin-left: 30px;
+  margin: 30px;
   background: transparent;
+
 }
 
 .navigation div a:hover {
@@ -107,12 +141,15 @@ header {
 
 
 .navigation .btn_login {
+  border-color: var(--white-color);
+  border-radius: var(--border-radius-m);
+  background: transparent;
+  text-decoration: none;
+  margin-left: 30px;
   width: 130px;
   height: 50px;
-  background: transparent;
   border: 2px solid #fff;
   outline: none;
-  border-radius: 6px;
   cursor: pointer;
   font-size: 1.1em;
   color: #fff;
@@ -120,12 +157,13 @@ header {
 }
 
 .navigation .btn_login:hover {
-  background: #fff;
-  color: #162938;
-
+  color: var(--primary-color);
+  border-color: var(--secondary-color);
+  background: var(--secondary-color);
+  text-decoration: none;
 }
 
-.navigation div::after {
+.navigation .nav-item::after {
   content: '';
   position: absolute;
   left: 0;
@@ -148,8 +186,225 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url('../assets/background.jpg') no-repeat;
-
+  background: var(--primary-color);
   background-size: cover;
   background-position: center;
+}
+
+.hero-section {
+  min-height: 100vh;
+  background: var(--primary-color);
+}
+
+.hero-section .section-content {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  color: white;
+  justify-content: space-between;
+  padding: 0px;
+
+}
+
+.hero-details {
+  margin-left: 60px;
+  margin-right: 100px;
+  width: 100%;
+}
+
+.hero-image {
+  width: 80%;
+}
+
+.hero-section .hero-details .title {
+  font-size: var(--font-size-xxl);
+  color: var(--secondary-color);
+  font-family: "Miniver", sans-serif;
+}
+
+.hero-section .hero-details .subtitle {
+  margin-top: 8px;
+  max-width: 70%;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+.hero-section .hero-details .description {
+  margin-top: 24px 0 40px;
+  max-width: 70%;
+  font-size: var(--font-size-m);
+}
+
+.hero-section .hero-image-wrapper {
+  margin-right: 30px;
+  max-width: 500px;
+}
+
+.hero-section .hero-details .buttons {
+  display: flex;
+  gap: 23px;
+}
+
+.hero-section .hero-details .button {
+  padding: 10px 26px;
+  color: var(--primary-color);
+  border: 2px solid transparent;
+  border-radius: var(--border-radius-m);
+  background: var(--secondary-color);
+  font-weight: var(--font-weight-medium);
+}
+
+.hero-section .hero-details .button:hover,
+.hero-section .hero-details .contact-us {
+  color: var(--white-color);
+  border-color: var(--white-color);
+  background: transparent;
+  text-decoration: none;
+}
+
+.hero-section .hero-details .contact-us:hover {
+  color: var(--primary-color);
+  border-color: var(--secondary-color);
+  background: var(--secondary-color);
+  text-decoration: none;
+}
+
+@media screen and (max-width: 900px) {
+  :root {
+    --font-size-m: 1rem;
+    --font-size-l: 1.3rem;
+    --font-size-xl: 1.5rem;
+    --font-size-xxl: 1.8rem;
+  }
+}
+
+.book_trending_item {
+  width: 300px;
+  height: 400px;
+  background: #ba8a4a;
+  border-radius: 10px;
+  margin-bottom: 50px;
+  overflow: hidden;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book_trending_item:hover {
+  transform: translateY(-10px);
+  /* Di chuyển nhẹ khi hover */
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+  /* Tạo hiệu ứng đổ bóng khi hover */
+}
+
+.book_trending_container {
+  display: flex;
+  list-style: none;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.book_img {
+  display: block;
+  margin: 0px auto;
+  margin-top: 17px;
+  width: 260px;
+  /* Đặt kích thước chiều rộng */
+  height: 250px;
+  /* Đặt kích thước chiều cao */
+  border-radius: 10px;
+  border: #fff solid 5px;
+  /* Tạo ảnh hình tròn nếu muốn */
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  /* Thêm transition cho hiệu ứng mượt */
+}
+
+.book_trending_item:hover .book_img {
+  transform: scale(1.05);
+  /* Phóng to ảnh khi hover */
+}
+
+.name_book {
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  margin-top: 21px;
+}
+
+.dongia_book {
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  margin-top: 21px;
+}
+
+.star {
+  display: flex;
+  margin: 0px auto;
+  width: 50%;
+  margin-top: 10px;
+  margin-left: 95px;
+}
+
+.star img {
+  width: 20px;
+  margin: 2px;
+
+}
+
+.title2 h2 {
+  font-size: var(--font-size-xxl);
+  color: var(--secondary-color);
+  font-family: "Miniver", sans-serif;
+}
+
+.title2 {
+  margin: 30px;
+  justify-self: center;
+}
+
+.book_details_container {
+  width: 85vw;
+
+}
+
+.book_details_item {
+  display: flex;
+  list-style: none;
+  width: 100%;
+  height: 400px;
+  background: #ba8a4a;
+  border-radius: 10px;
+  margin-bottom: 50px;
+  overflow: hidden;
+  height: auto;
+}
+
+.book_details_item .book_img {
+  margin: 20px;
+}
+
+.book_details_item2 title3 {
+  font-size: var(--font-size-xl);
+}
+
+.book_details_item2 {
+  margin: 20px;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  color: white;
+}
+
+.book_details_item2 div,
+p {
+  margin: 20px;
+
+}
+
+
+
+.book_details_item2 .star {
+  margin-left: 20px;
+
 }

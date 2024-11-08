@@ -30,7 +30,6 @@ export default {
       try {
         await BookService.create(data);
         alert("Sách đã được tạo thành công.");
-        // this.$router.push({ name: "contactbook" });
       } catch (error) {
         console.log(error);
         this.message = "Có lỗi xảy ra khi thêm sách.";
