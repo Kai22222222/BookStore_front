@@ -1,8 +1,7 @@
 <template>
-    <br>
-    <br>
-    <br>
-    <br><br><br><br><br><br><br><br><br><br>
+  <div class="space">
+    
+  </div>
   <div v-if="book">
     <div class="book_details_container">
       <div class="book_details_item">
@@ -10,45 +9,45 @@
           <img :src="getAvatarUrl(book.avatar)" alt="Book Image" class="book_img">
         </div>
         <div class="book_details_item2">
-                <div class="title3">
-                    <h2>{{ book.tensach }}</h2>
-                 </div>
-                 <div>
-                     by <strong>{{ book.tacgia }}</strong>
-                 </div>
+          <div class="title3">
+            <h2>{{ book.tensach }}</h2>
+          </div>
+          <div>
+            by <strong>{{ book.tacgia }}</strong>
+          </div>
         
-                <div class="star">
-                    <span>
-                        <img src="../assets/star.png" alt="">
-                    </span>
-                    <span>
-                        <img src="../assets/star.png" alt="">
-                    </span>
-                    <span>
-                        <img src="../assets/star.png" alt="">
-                    </span>
-                    <span>
-                        <img src="../assets/star.png" alt="">
-                    </span>
-                    <span>
-                        <img src="../assets/star.png" alt="">
-                    </span>
-                </div>
-                <div >
-                   <strong> Giá:</strong>
-                    {{ book.dongia }}đ
-                </div>
-                <div >
-                    <strong>Số quyển:</strong>
-                    {{ book.soquyen }}
-                </div>
-                <div >
-                    <strong>Năm xuất bản:</strong>
-                    {{ book.namxuatban }}
-                </div>
-                <p>Amoral, cunning, ruthless, and instructive, this piercing work distills three thousand years of the history of power in to forty-eight well explicated laws. As attention--grabbing in its design as it is in its content, this bold volume outlines the laws of power in their unvarnished essence, synthesizing the philosophies of Machiavelli, Sun-tzu, Carl von Clausewitz, and other great thinkers. Some laws teach the need for prudence ("Law 1: Never Outshine the Master"), the virtue of stealth ("Law 3: Conceal Your Intentions"), and many demand the total absence of mercy ("Law 15: Crush Your Enemy Totally"), but like it or not, all have applications in real life. Illustrated through the tactics of Queen Elizabeth I, Henry Kissinger, P. T. Barnum, and other famous figures who have wielded--or been victimized by--power, these laws will fascinate any reader interested in gaining, observing, or defending against ultimate control.</p>
+          <div class="star">
+            <span>
+              <img src="../assets/star.png" alt="">
+            </span>
+            <span>
+              <img src="../assets/star.png" alt="">
+            </span>
+            <span>
+              <img src="../assets/star.png" alt="">
+            </span>
+            <span>
+              <img src="../assets/star.png" alt="">
+            </span>
+            <span>
+              <img src="../assets/star.png" alt="">
+            </span>
+          </div>
+          <div>
+            <strong> Giá:</strong>
+            {{ book.dongia }}đ
+          </div>
+          <div>
+            <strong>Số quyển:</strong>
+            {{ book.soquyen }}
+          </div>
+          <div>
+            <strong>Năm xuất bản:</strong>
+            {{ book.namxuatban }}
+          </div>
+          <p>Amoral, cunning, ruthless, and instructive, this piercing work distills three thousand years of the history of power in to forty-eight well explicated laws...</p>
+          <button @click="borrowBook" class="btn btn-primary">Mượn Sách</button>
         </div>
-         
       </div>
     </div>
   </div>
@@ -59,6 +58,8 @@ import BookCard from "@/components/BookCard2.vue";
 import InputSearch from "@/components/InputSearch.vue";
 import BookList from "@/components/BookList2.vue";
 import BookService from "@/services/books.service";
+import BorrowService from "@/services/borrow.service";
+import { useTodoStore } from "@/store/todostore";
 
 export default {
   components: {
@@ -85,6 +86,50 @@ export default {
     },
     getAvatarUrl(avatarPath) {
       return `${this.baseImageUrl}${avatarPath}`;
+    },
+    async borrowBook() {
+      try {
+        // Lấy username từ store
+        const todoStore = useTodoStore();
+        const username = todoStore.username;
+
+        // Kiểm tra nếu không có username hoặc book ID
+        if (!username) {
+          alert("Chưa đăng nhập");
+          this.$router.push({ name: "book.login" });
+          return;
+        }
+
+        // Check if there are enough copies to borrow
+        const newQuantity = parseInt(this.book.soquyen) - 1;
+        if (newQuantity < 0) {
+          alert("Không còn sách để mượn");
+          return;
+        }
+
+        // Update the book quantity in the database
+        const updatedBook = { soquyen: newQuantity };
+
+        // Update the book in the database
+        await BookService.update(this.book._id, updatedBook);
+
+        // Update the local value so it reflects immediately in the UI
+        this.book.soquyen = newQuantity.toString();
+
+        // Lưu thông tin mượn sách
+        const borrowData = {
+          masach: this.$route.params.id,
+          madocgia: username,
+          ngaymuon: new Date(), // Ngày mượn hiện tại
+          ngaytra: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Ngày trả sau 7 ngày
+        };
+
+        await BorrowService.borrow(borrowData); // Gọi service để lưu thông tin
+
+        alert("Mượn sách thành công!");
+      } catch (error) {
+        console.log("Lỗi khi mượn sách:", error);
+      }
     }
   },
   mounted() {

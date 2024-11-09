@@ -17,60 +17,6 @@
         </div>
 
     </section>
-
-<div class="page row">
-<div class="col-md-10">
-<InputSearch v-model="searchText" />
-</div>
-<div class="mt-3 col-md-6">
-<h4>
-Sách
-<i class="fas fa-address-book"></i>
-</h4>
-<BookList
-v-if="filteredContactsCount > 0"
-:contacts="filteredContacts"
-v-model:activeIndex="activeIndex"
-/>
-<p v-else>Không có sách nào.</p>
-<div class="mt-3 row justify-content-around align-items-center">
-<button class="btn btn-sm btn-primary" @click="refreshList()">
-<i class="fas fa-redo"></i> Làm mới
-</button>
-<button class="btn btn-sm btn-success" @click="goToAddContact">
-<i class="fas fa-plus"></i> đăng ký
-</button>
-<button class="btn btn-sm btn-success" @click="goToLogIn">
-<i class="fas fa-plus"></i> đăng nhập
-</button>
-
-<button class="btn btn-sm btn-success" @click="goToAddNXB">
-<i class="fas fa-plus"></i> thêm sách
-</button>
-
-<button
-class="btn btn-sm btn-danger"
-@click="removeAllContacts"
->
-<i class="fas fa-trash"></i> Xóa tất cả
-</button>
-</div>
-</div>
-<div class="mt-3 col-md-6">
-<div v-if="activeContact">
-<h4>
-Chi tiết Liên hệ
-<i class="fas fa-address-card"></i>
-</h4>
-<BookCard :contact="activeContact" />
-</div>
-</div>
-</div>
-<!-- Hiển thị tất cả contacts -->
- <div> 
- </div>
- <br>
- <br>
             <div v-if="contacts.length > 0">
                <div  class="title2">
                 <h2 >Trending Books Of The Week</h2>

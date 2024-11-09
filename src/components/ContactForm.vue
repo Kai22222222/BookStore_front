@@ -13,11 +13,11 @@
     </div>
 
     <div class="form-group">
-      <button class="btn btn-primary">Lưu</button>
-      <button v-if="contactLocal._id" type="button" class="ml-2 btn btn-danger" @click="deleteContact">
-        Xóa
+       <button class="btn_login2">
+        Login
       </button>
-      <button type="button" class="ml-2 btn btn-danger" @click="Cancel">
+      
+      <button type="button" class="btn_login2" @click="Cancel">
         Thoát
       </button>
     </div>
@@ -77,5 +77,5 @@ export default {
 </script>
 
 <style scoped>
-@import "@/assets/form.css";
+@import "../assets/main.css";
 </style>
