@@ -1,63 +1,37 @@
 <template>
-<div class="page row">
-<div class="col-md-10">
-<InputSearch v-model="searchText" />
-</div>
-<div class="mt-3 col-md-6">
-<h4>
-NXB
-<i class="fas fa-address-book"></i>
-</h4>
-<NXBList
-v-if="filteredContactsCount > 0"
-:contacts="filteredContacts"
-v-model:activeIndex="activeIndex"
-/>
-<p v-else>Không có nxb nào.</p>
-<div class="mt-3 row justify-content-around align-items-center">
-<button class="btn btn-sm btn-primary" @click="refreshList()">
-<i class="fas fa-redo"></i> Làm mới
-</button>
-<button class="btn btn-sm btn-success" @click="goToAddContact">
-<i class="fas fa-plus"></i> đăng ký
-</button>
-<button class="btn btn-sm btn-success" @click="goToLogIn">
-<i class="fas fa-plus"></i> đăng nhập
-</button>
-
-<button class="btn btn-sm btn-success" @click="goToAddNXB">
-<i class="fas fa-plus"></i> thêm nxb
-</button>
-
-<button
-class="btn btn-sm btn-danger"
-@click="removeAllContacts"
->
-<i class="fas fa-trash"></i> Xóa tất cả
-</button>
-</div>
-</div>
-<div class="mt-3 col-md-6">
-<div v-if="activeContact">
-<h4>
-Chi tiết Liên hệ
-<i class="fas fa-address-card"></i>
-</h4>
-<NXBCard :contact="activeContact" />
-</div>
-</div>
-</div>
+      <div class="space">
+    
+  </div>
+            <div v-if="contacts.length > 0">
+               <div  class="title2">
+                <h2 >All NXB </h2>
+                </div>
+                    <div class="book_trending_container2">
+                        
+                    <div v-for="contact in contacts" :key="contact.id" class="book_trending_item2" @click="goToNXBDetails(contact._id)">
+                        
+                         <div class="name_book">
+                             {{ contact.tennxb }}
+                        </div> 
+                         <div class="name_book">
+                             {{ contact.diachi }}
+                        </div> 
+                    </div>
+                    </div>
+            </div>
+   
 </template>
 <script>
-import NXBCard from "@/components/NXBCard.vue";
+import BookCard from "@/components/BookCard2.vue";
 import InputSearch from "@/components/InputSearch.vue";
-import NXBList from "@/components/NXBList.vue";
+import BookList from "@/components/BookList2.vue";
 import NXBService from "@/services/nxb.service";
+
 export default {
 components: {
-NXBCard,
+BookCard,
 InputSearch,
-NXBList,
+BookList,
 },
 // Đoạn mã xử lý đầy đủ sẽ trình bày bên dưới
 data() {
@@ -65,6 +39,7 @@ return {
 contacts: [],
 activeIndex: -1,
 searchText: "",
+ baseImageUrl: "http://localhost:3002/", 
 };
 },  
 watch: {
@@ -78,8 +53,8 @@ computed: {
 // Chuyển các đối tượng contact thành chuỗi để tiện cho tìm kiếm.
 contactStrings() {
 return this.contacts.map((contact) => {
-const { name, password } = contact;
-return [name, password].join("");
+const { tensach, password } = contact;
+return [ tensach, password].join("");
 });
 },
 // Trả về các contact có chứa thông tin cần tìm kiếm.
@@ -105,15 +80,22 @@ this.contacts = await NXBService.getAll();
 console.log(error);
 }
 },
+ getAvatarUrl(avatarPath) {
+            return `${this.baseImageUrl}${avatarPath}`;
+        },
 refreshList() {
 this.retrieveContacts();
 this.activeIndex = -1;
 },
+goToNXBDetails(bookId) {
+        // Navigate to the book details page with the given bookId
+        this.$router.push({ name: "nxb.details", params: { id: bookId } });
+    },
 async removeAllContacts() {
     
-if (confirm("Bạn muốn xóa tất cả Liên hệ?")) {
+if (confirm("Bạn muốn xóa tất cả các Sách?")) {
 try {
-await NXBService.deleteAll();
+await ContactService.deleteAll();
 this.refreshList();
 } catch (error) {
 console.log(error);
@@ -126,15 +108,15 @@ goToAddContact() {
 this.$router.push({ name: "book.signup" });
 },
 goToAddNXB() {
-this.$router.push({ name: "nxb.add" });
+this.$router.push({ name: "book.add" });
 },
 goToLogIn() {
 this.$router.push({ name: "book.login" });
 },
-
+},
 mounted() {
 this.refreshList();
-},
+
 },
 };
 

@@ -1,52 +1,47 @@
 <template>
-<div class="page row">
-<div class="col-md-10">
-<InputSearch v-model="searchText" />
-</div>
-<div class="mt-3 col-md-6">
-<h4>
-Sách
-<i class="fas fa-address-book"></i>
-</h4>
-<BookList
-v-if="filteredContactsCount > 0"
-:contacts="filteredContacts"
-v-model:activeIndex="activeIndex"
-/>
-<p v-else>Không có sách nào.</p>
-<div class="mt-3 row justify-content-around align-items-center">
-<button class="btn btn-sm btn-primary" @click="refreshList()">
-<i class="fas fa-redo"></i> Làm mới
-</button>
-<button class="btn btn-sm btn-success" @click="goToAddContact">
-<i class="fas fa-plus"></i> đăng ký
-</button>
-<button class="btn btn-sm btn-success" @click="goToLogIn">
-<i class="fas fa-plus"></i> đăng nhập
-</button>
+      <div class="space">
+    
+  </div>
+            <div v-if="contacts.length > 0">
+               <div  class="title2">
+                <h2 >All Books </h2>
+                </div>
+                    <div class="book_trending_container">
+                        
+                    <div v-for="contact in contacts" :key="contact.id" class="book_trending_item" @click="goToBookDetails(contact._id)">
+                        <div >
+                          <img :src="getAvatarUrl(contact.avatar)" alt="Book Image" class="book_img">
+                        </div>
+                        <div class="star">
+                            <span>
+                                <img src="../assets/star.png" alt="">
+                            </span>
+                            <span>
+                                <img src="../assets/star.png" alt="">
+                            </span>
+                            <span>
+                                <img src="../assets/star.png" alt="">
+                            </span>
+                            <span>
+                                <img src="../assets/star.png" alt="">
+                            </span>
+                            <span>
+                                <img src="../assets/star.png" alt="">
+                            </span>
 
-<button class="btn btn-sm btn-success" @click="goToAddNXB">
-<i class="fas fa-plus"></i> thêm sách
-</button>
-
-<button
-class="btn btn-sm btn-danger"
-@click="removeAllContacts"
->
-<i class="fas fa-trash"></i> Xóa tất cả
-</button>
-</div>
-</div>
-<div class="mt-3 col-md-6">
-<div v-if="activeContact">
-<h4>
-Chi tiết Liên hệ
-<i class="fas fa-address-card"></i>
-</h4>
-<BookCard :contact="activeContact" />
-</div>
-</div>
-</div>
+                            
+                        </div>
+                        
+                         <div class="name_book">
+                             {{ contact.tensach }}
+                        </div> 
+                         <div class="dongia_book">
+                             {{ contact.tacgia }}
+                        </div> 
+                    </div>
+                    </div>
+            </div>
+   
 </template>
 <script>
 import BookCard from "@/components/BookCard2.vue";
@@ -65,6 +60,7 @@ return {
 contacts: [],
 activeIndex: -1,
 searchText: "",
+ baseImageUrl: "http://localhost:3002/", 
 };
 },  
 watch: {
@@ -79,7 +75,7 @@ computed: {
 contactStrings() {
 return this.contacts.map((contact) => {
 const { tensach, password } = contact;
-return [ tensachname, password].join("");
+return [ tensach, password].join("");
 });
 },
 // Trả về các contact có chứa thông tin cần tìm kiếm.
@@ -105,10 +101,17 @@ this.contacts = await BookService.getAll();
 console.log(error);
 }
 },
+ getAvatarUrl(avatarPath) {
+            return `${this.baseImageUrl}${avatarPath}`;
+        },
 refreshList() {
 this.retrieveContacts();
 this.activeIndex = -1;
 },
+goToBookDetails(bookId) {
+        // Navigate to the book details page with the given bookId
+        this.$router.push({ name: "book.details", params: { id: bookId } });
+    },
 async removeAllContacts() {
     
 if (confirm("Bạn muốn xóa tất cả các Sách?")) {
@@ -131,10 +134,10 @@ this.$router.push({ name: "book.add" });
 goToLogIn() {
 this.$router.push({ name: "book.login" });
 },
-
+},
 mounted() {
 this.refreshList();
-},
+
 },
 };
 

@@ -7,7 +7,8 @@
       <div class="book_details_item">
         <div>
           <img :src="getAvatarUrl(book.avatar)" alt="Book Image" class="book_img">
-        </div>
+          <button @click="borrowBook" class="btn_login">Mượn Sách</button>
+        </div>  
         <div class="book_details_item2">
           <div class="title3">
             <h2>{{ book.tensach }}</h2>
@@ -35,7 +36,7 @@
           </div>
           <div>
             <strong> Giá:</strong>
-            {{ book.dongia }}đ
+            {{ formatPrice(book.dongia)  }}đ
           </div>
           <div>
             <strong>Số quyển:</strong>
@@ -45,8 +46,10 @@
             <strong>Năm xuất bản:</strong>
             {{ book.namxuatban }}
           </div>
-          <p>Amoral, cunning, ruthless, and instructive, this piercing work distills three thousand years of the history of power in to forty-eight well explicated laws...</p>
-          <button @click="borrowBook" class="btn btn-primary">Mượn Sách</button>
+         <div>
+           {{ book.mota }}
+         </div>
+          
         </div>
       </div>
     </div>
@@ -84,6 +87,16 @@ export default {
         console.log(error);
       }
     },
+   formatPrice(price) {
+    // Kiểm tra xem giá trị có phải là số không và chuyển đổi nếu cần
+    const number = typeof price === 'number' ? price : parseFloat(price);
+    if (isNaN(number)) {
+      return price; // Nếu không phải số, trả về giá trị ban đầu
+    }
+
+    // Định dạng số với dấu phân cách mỗi 3 chữ số
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  },
     getAvatarUrl(avatarPath) {
       return `${this.baseImageUrl}${avatarPath}`;
     },

@@ -12,7 +12,7 @@ import BookDetails from "@/views/BookDetails.vue";
 //route cho Nhà Xuất Bản
 import AddNXB from "@/views/AddNXB.vue";
 import ListNXB from "@/views/ListNXB.vue";
-
+import NXBDetails from "@/views/NXBDetails.vue";
 //route cho Nhân Viên
 import ListNhanVien from "@/views/ListNhanVien.vue";
 import AddNhanVien from "@/views/AddNhanVien.vue";
@@ -68,6 +68,12 @@ const routes = [
         path: '/books/:id',
         name: 'book.details',
         component: BookDetails, // Make sure this is the component for book details view
+        props: true // Allows route params to be passed as props
+    },
+    {
+        path: '/nxb/:id',
+        name: 'nxb.details',
+        component: NXBDetails, // Make sure this is the component for book details view
         props: true // Allows route params to be passed as props
     }
 ];

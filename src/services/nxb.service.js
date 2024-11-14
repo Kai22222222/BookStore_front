@@ -32,7 +32,5 @@ class NXBService {
             headers: { 'Authorization': `Bearer ${token}` }
         });
     }
-
-
 }
 export default new NXBService();

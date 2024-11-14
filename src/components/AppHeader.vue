@@ -9,6 +9,12 @@
                 </router-link>
             </div>
             <div class="nav-item">
+                <router-link :to="{ name: 'book.list' }" style="color: aliceblue;">
+                    Books
+                    <i class="fas fa-address-book"></i>
+                </router-link>
+            </div>
+            <div class="nav-item">
                 <router-link :to="{ name: 'contactbook' }" style="color: aliceblue;">
                     About
                     <i class="fas fa-address-book"></i>

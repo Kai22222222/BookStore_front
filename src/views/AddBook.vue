@@ -1,4 +1,10 @@
 <template>
+   <div class="space">
+    
+  </div>
+   <div class="space">
+    
+  </div>
 <div class="form-container">
     
 <div class="page">
