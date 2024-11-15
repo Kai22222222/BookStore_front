@@ -35,7 +35,16 @@
       <Field name="manxb"   class="form-control" v-model="contactLocal.manxb" />
       <ErrorMessage name="manxb" class="error-feedback" />
     </div>
-
+    <div class="form-group">
+      <label >Mã loại</label>
+      <Field name="maloai"   class="form-control" v-model="contactLocal.maloai" />
+      <ErrorMessage name="maloai" class="error-feedback" />
+    </div>
+    <div class="form-group">
+      <label >Mô tả</label>
+      <Field name="mota"   class="form-control" v-model="contactLocal.mota" />
+      <ErrorMessage name="mota" class="error-feedback" />
+    </div>
     <div class="form-group">
       <button  @click.prevent="submitContact" class="btn btn-primary">Lưu</button>
       <button v-if="contactLocal._id" type="button" class="ml-2 btn btn-danger" @click="deleteContact">

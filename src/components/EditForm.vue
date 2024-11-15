@@ -13,8 +13,48 @@
     </div>
 
     <div class="form-group">
+      <label for="holot">Họ</label>
+      <Field name="holot" type="text" class="form-control" v-model="contactLocal.holot"/>
+      <ErrorMessage name="holot" class="error-feedback" />
+    </div>
+
+    <div class="form-group">
+      <label for="ten">Tên</label>
+      <Field name="ten" type="text" class="form-control" v-model="contactLocal.ten"/>
+      <ErrorMessage name="ten" class="error-feedback" />
+    </div>
+
+     <div class="form-group">
+      <label for="phai">Giới tính</label>
+      <Field as="select" name="phai" class="form-control" v-model="contactLocal.phai">
+        <option value="">Chọn giới tính</option>
+        <option value="Nam">Nam</option>
+        <option value="Nữ">Nữ</option>
+      </Field>
+      <ErrorMessage name="phai" class="error-feedback" />
+    </div>
+
+    <div class="form-group">
+      <label for="ngaysinh">Ngày sinh</label>
+      <Field name="ngaysinh" type="date" class="form-control" v-model="contactLocal.ngaysinh"/>
+      <ErrorMessage name="ngaysinh" class="error-feedback" />
+    </div>
+
+    <div class="form-group">
+      <label for="diachi">Địa chỉ</label>
+      <Field name="diachi" type="text" class="form-control" v-model="contactLocal.diachi"/>
+      <ErrorMessage name="diachi" class="error-feedback" />
+    </div>
+
+    <div class="form-group">
+      <label for="sdt">Số điện thoại</label>
+      <Field name="sdt" type="text" class="form-control" v-model="contactLocal.sdt"/>
+      <ErrorMessage name="sdt" class="error-feedback" />
+    </div>
+    
+    <div class="form-group">
        <button class="btn_login2">
-        Login
+        Lưu
       </button>
       
       <button type="button" class="btn_login2" @click="Cancel">

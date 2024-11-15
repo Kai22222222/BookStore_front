@@ -2,6 +2,7 @@ import createApiClient from "./api.service";
 import axios from "axios";
 
 const API_URL = "http://localhost:3002/api/contacts";
+
 class ContactService {
     constructor(baseUrl = "/api/contacts") {
         this.api = createApiClient(baseUrl);
@@ -32,6 +33,7 @@ class ContactService {
             headers: { 'Authorization': `Bearer ${token}` }
         });
     }
+
 
 
 }

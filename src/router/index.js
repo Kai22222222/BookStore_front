@@ -13,16 +13,24 @@ import BookDetails from "@/views/BookDetails.vue";
 import AddNXB from "@/views/AddNXB.vue";
 import ListNXB from "@/views/ListNXB.vue";
 import NXBDetails from "@/views/NXBDetails.vue";
+import NXBEdit from "@/views/EditNXB.vue";
 //route cho Nhân Viên
 import ListNhanVien from "@/views/ListNhanVien.vue";
 import AddNhanVien from "@/views/AddNhanVien.vue";
-
-
+import ListAccount from "@/views/ListAccount.vue";
+import EditAccount from "@/views/EditAccount.vue";
+////route cho lịch sử Mượn Sách
+import BorrowBook from "@/views/BorrowBook.vue";
 const routes = [
     {
         path: "/",
         name: "contactbook",
         component: BookHome,
+    },
+    {
+        path: "/borrow",
+        name: "borrow",
+        component: BorrowBook,
     },
     {
         path: "/login",
@@ -45,6 +53,16 @@ const routes = [
         component: ListBook,
     },
     {
+        path: "/listaccount",
+        name: "account.list",
+        component: ListAccount,
+    },
+    {
+        path: "/edit/:id",
+        name: "account.edit",
+        component: EditAccount,
+    },
+    {
         path: "/listnxb",
         name: "nxb.list",
         component: ListNXB,
@@ -53,6 +71,11 @@ const routes = [
         path: "/addnxb",
         name: "nxb.add",
         component: AddNXB,
+    },
+    {
+        path: "/nxb/edit/:id",
+        name: "nxb.edit",
+        component: NXBEdit,
     },
     {
         path: "/listnhanvien",

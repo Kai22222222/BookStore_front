@@ -10,6 +10,9 @@ class BookService {
     async getAll() {
         return (await this.api.get("/")).data;
     }
+    async getByPublisher(manxb) {
+        return (await this.api.get(`/nxb/${manxb}`)).data;
+    }
     async create(data) {
         return (await this.api.post("/", data)).data;
     }

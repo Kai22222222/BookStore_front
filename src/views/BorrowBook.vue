@@ -1,38 +1,43 @@
 <template>
-      <div class="space">
-    
+  <div class="space"></div>
+  <div v-if="contacts.length > 0">
+    <div class="title2">
+      <h2> Lịch sử mượn sách</h2>
+    </div>
+    <div class="book_trending_container2">
+      <div
+        v-for="contact in contacts"
+        :key="contact.id"
+        class="book_trending_item2"
+       
+      >
+      
+        <div class="name_book">
+            Người mượn:
+          {{ contact.madocgia }}
+        </div>
+        <div class="name_book" @click="goToBookDetails(contact.masach)">
+            Sách:
+          {{ contact.masach }}
+        </div>
+        <div class="name_book">
+            Ngày mượn:
+          {{ formatDate(contact.ngaymuon) }}
+        </div>
+        <div class="name_book">
+            Ngày trả:
+          {{ formatDate(contact.ngaytra) }}
+        </div>
+      </div>
+    </div>
   </div>
-            <div v-if="contacts.length > 0">
-               <div  class="title2">
-                <h2 >All NXB </h2>
-                </div>
-                    <div class="book_trending_container2">
-                        
-                    <div v-for="contact in contacts" :key="contact.id" class="book_trending_item2" @click="goToNXBDetails(contact._id)">
-                        
-                         <div class="name_book">
-                             {{ contact.tennxb }}
-                        </div> 
-                         <div class="name_book">
-                             {{ contact.diachi }}
-                        </div> 
-                         <button @click.stop="goToDelete(contact._id)" class="btn_login" style="width: 30%; margin-top: 30px;">
-          Xóa
-        </button>
-        <button @click.stop="goToEdit(contact._id)" class="btn_login" style="width: 30%;">
-          Sửa
-        </button>
-                    </div>
-                    
-                    </div>
-            </div>
-   
 </template>
+
 <script>
 import BookCard from "@/components/BookCard2.vue";
 import InputSearch from "@/components/InputSearch.vue";
 import BookList from "@/components/BookList2.vue";
-import NXBService from "@/services/nxb.service";
+import ContactService from "@/services/borrow.service";
 
 export default {
 components: {
@@ -80,23 +85,16 @@ return this.filteredContacts.length;
 },
 },
 methods: {
-     async goToDelete(id) {
-      try {
-         
-        await NXBService.delete(id);
-        alert("Xóa thành công.");
-       this.contacts = await NXBService.getAll();
-      } catch (error) {
-        console.log(error);
-        this.message = "Có lỗi xảy ra khi xóa liên hệ.";
-      }
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
     },
-goToEdit(id) {
-this.$router.push({ name: "nxb.edit",params: { id: id } });
-},
 async retrieveContacts() {
 try {
-this.contacts = await NXBService.getAll();
+this.contacts = await ContactService.getAll();
 } catch (error) {
 console.log(error);
 }
@@ -108,9 +106,9 @@ refreshList() {
 this.retrieveContacts();
 this.activeIndex = -1;
 },
-goToNXBDetails(bookId) {
+goToBookDetails(bookId) {
         // Navigate to the book details page with the given bookId
-        this.$router.push({ name: "nxb.details", params: { id: bookId } });
+        this.$router.push({ name: "book.details", params: { id: bookId } });
     },
 async removeAllContacts() {
     
@@ -123,8 +121,20 @@ console.log(error);
 }
 }
 },
-
-
+ async goToDelete(id) {
+      try {
+         
+        await ContactService.delete(id);
+        alert("Xóa thành công.");
+       this.contacts = await ContactService.getAll();
+      } catch (error) {
+        console.log(error);
+        this.message = "Có lỗi xảy ra khi xóa liên hệ.";
+      }
+    },
+goToEdit(id) {
+this.$router.push({ name: "account.edit",params: { id: id } });
+},
 goToAddContact() {
 this.$router.push({ name: "book.signup" });
 },

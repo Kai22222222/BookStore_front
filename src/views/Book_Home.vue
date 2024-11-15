@@ -51,8 +51,8 @@
                              {{ contact.tensach }}
                         </div> 
                          <div class="dongia_book">
-                             {{ contact.dongia }}
-                        </div> 
+                             {{ formatPrice(contact.dongia) }}đ
+                         </div>
                     </div>
                     </div>
             </div>
@@ -123,6 +123,13 @@ refreshList() {
 this.retrieveContacts();
 this.activeIndex = -1;
 },
+formatPrice(price) {
+      const number = typeof price === 'number' ? price : parseFloat(price);
+      if (isNaN(number)) {
+        return price;
+      }
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    },
 goToBookDetails(bookId) {
         // Navigate to the book details page with the given bookId
         this.$router.push({ name: "book.details", params: { id: bookId } });

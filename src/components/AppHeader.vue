@@ -9,14 +9,32 @@
                 </router-link>
             </div>
             <div class="nav-item">
+                <router-link :to="{ name: 'account.list' }" style="color: aliceblue;">
+                    Account
+                    <i class="fas fa-address-book"></i>
+                </router-link>
+            </div>
+            <div class="nav-item">
                 <router-link :to="{ name: 'book.list' }" style="color: aliceblue;">
                     Books
                     <i class="fas fa-address-book"></i>
                 </router-link>
             </div>
             <div class="nav-item">
+                <router-link :to="{ name: 'nxb.list' }" style="color: aliceblue;">
+                    NXB
+                    <i class="fas fa-address-book"></i>
+                </router-link>
+            </div>
+            <div class="nav-item">
                 <router-link :to="{ name: 'contactbook' }" style="color: aliceblue;">
                     About
+                    <i class="fas fa-address-book"></i>
+                </router-link>
+            </div>
+            <div class="nav-item">
+                <router-link :to="{ name: 'book.add' }" style="color: aliceblue;">
+                    Thêm Sách
                     <i class="fas fa-address-book"></i>
                 </router-link>
             </div>

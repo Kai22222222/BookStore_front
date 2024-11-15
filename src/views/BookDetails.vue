@@ -1,14 +1,12 @@
 <template>
-  <div class="space">
-    
-  </div>
+  <div class="space"></div>
   <div v-if="book">
     <div class="book_details_container">
       <div class="book_details_item">
         <div>
           <img :src="getAvatarUrl(book.avatar)" alt="Book Image" class="book_img">
           <button @click="borrowBook" class="btn_login">Mượn Sách</button>
-        </div>  
+        </div>
         <div class="book_details_item2">
           <div class="title3">
             <h2>{{ book.tensach }}</h2>
@@ -16,128 +14,117 @@
           <div>
             by <strong>{{ book.tacgia }}</strong>
           </div>
-        
           <div class="star">
-            <span>
-              <img src="../assets/star.png" alt="">
-            </span>
-            <span>
-              <img src="../assets/star.png" alt="">
-            </span>
-            <span>
-              <img src="../assets/star.png" alt="">
-            </span>
-            <span>
-              <img src="../assets/star.png" alt="">
-            </span>
-            <span>
-              <img src="../assets/star.png" alt="">
-            </span>
+            <span><img src="../assets/star.png" alt=""></span>
+            <span><img src="../assets/star.png" alt=""></span>
+            <span><img src="../assets/star.png" alt=""></span>
+            <span><img src="../assets/star.png" alt=""></span>
+            <span><img src="../assets/star.png" alt=""></span>
           </div>
           <div>
-            <strong> Giá:</strong>
-            {{ formatPrice(book.dongia)  }}đ
+            <strong>Giá:</strong> {{ formatPrice(book.dongia) }}đ
           </div>
           <div>
-            <strong>Số quyển:</strong>
-            {{ book.soquyen }}
+            <strong>Số quyển:</strong> {{ book.soquyen }}
+          </div>
+          <div @click="goToNXBDetails(book.manxb)">
+            <strong>Nhà xuất bản:</strong> {{ book.manxb }}
           </div>
           <div>
-            <strong>Năm xuất bản:</strong>
-            {{ book.namxuatban }}
+            <strong>Năm xuất bản:</strong> {{ book.namxuatban }}
           </div>
-         <div>
-           {{ book.mota }}
-         </div>
-          
+          <div>{{ book.mota }}</div>
         </div>
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
-import BookCard from "@/components/BookCard2.vue";
-import InputSearch from "@/components/InputSearch.vue";
-import BookList from "@/components/BookList2.vue";
 import BookService from "@/services/books.service";
 import BorrowService from "@/services/borrow.service";
 import { useTodoStore } from "@/store/todostore";
+import NXBService from "@/services/nxb.service";
 
 export default {
-  components: {
-    BookCard,
-    InputSearch,
-    BookList,
-  },
   data() {
     return {
       book: null,
-      baseImageUrl: "http://localhost:3002/", 
+      nxb: null,
+      data:null,
+      baseImageUrl: "http://localhost:3002/", // Replace with your actual base URL
     };
-  },  
+  },
   methods: {
+   async goToNXBDetails(manxb) {
+    try {
+        const data = await NXBService.getByManxb(manxb);
+        
+        // Access the first element in the array and then get its `_id`
+        if (Array.isArray(data) && data.length > 0) {
+            const idnxb = data[0]._id;
+            console.log(idnxb); // Verify that the correct publisher ID is being retrieved
+            this.$router.push({ name: "nxb.details", params:  { id: idnxb } });
+        } else {
+            console.log("No publisher found with the given `manxb`.");
+        }
+    } catch (error) {
+        console.log("Failed to retrieve publisher details:", error);
+    }
+},
+
     async retrieveBook() {
       try {
         const bookId = this.$route.params.id;
         if (bookId) {
           this.book = await BookService.get(bookId);
+         
         }
       } catch (error) {
         console.log(error);
       }
     },
-   formatPrice(price) {
-    // Kiểm tra xem giá trị có phải là số không và chuyển đổi nếu cần
-    const number = typeof price === 'number' ? price : parseFloat(price);
-    if (isNaN(number)) {
-      return price; // Nếu không phải số, trả về giá trị ban đầu
-    }
-
-    // Định dạng số với dấu phân cách mỗi 3 chữ số
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  },
+   
+    formatPrice(price) {
+      const number = typeof price === 'number' ? price : parseFloat(price);
+      if (isNaN(number)) {
+        return price;
+      }
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    },
     getAvatarUrl(avatarPath) {
       return `${this.baseImageUrl}${avatarPath}`;
     },
     async borrowBook() {
       try {
-        // Lấy username từ store
         const todoStore = useTodoStore();
         const username = todoStore.username;
 
-        // Kiểm tra nếu không có username hoặc book ID
         if (!username) {
           alert("Chưa đăng nhập");
           this.$router.push({ name: "book.login" });
           return;
         }
 
-        // Check if there are enough copies to borrow
         const newQuantity = parseInt(this.book.soquyen) - 1;
         if (newQuantity < 0) {
           alert("Không còn sách để mượn");
           return;
         }
 
-        // Update the book quantity in the database
         const updatedBook = { soquyen: newQuantity };
-
-        // Update the book in the database
         await BookService.update(this.book._id, updatedBook);
-
-        // Update the local value so it reflects immediately in the UI
         this.book.soquyen = newQuantity.toString();
 
-        // Lưu thông tin mượn sách
         const borrowData = {
           masach: this.$route.params.id,
           madocgia: username,
-          ngaymuon: new Date(), // Ngày mượn hiện tại
-          ngaytra: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Ngày trả sau 7 ngày
+          ngaymuon: new Date(),
+          ngaytra: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
 
-        await BorrowService.borrow(borrowData); // Gọi service để lưu thông tin
+        await BorrowService.borrow(borrowData);
 
         alert("Mượn sách thành công!");
       } catch (error) {
@@ -150,10 +137,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.page {
-  text-align: left;
-  max-width: 750px;
-}
-</style>
