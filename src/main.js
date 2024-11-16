@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import axios from 'axios';
 import App from './App.vue';
 import router from "./router";
 import { createPinia } from 'pinia'
@@ -10,6 +11,7 @@ import './assets/main.css';
 // Khởi tạo Vue app
 const pinia = createPinia();
 const app = createApp(App);
+app.config.globalProperties.$axios = axios;
 
 app.use(pinia);
 app.use(router);

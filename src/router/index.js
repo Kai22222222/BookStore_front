@@ -4,11 +4,14 @@ import { createWebHistory, createRouter } from "vue-router";
 import BookHome from "@/views/Book_Home.vue";
 import LogIn from "@/views/LogIn.vue";
 import SignUp from "@/views/SignUp.vue";
-
+import SignUpForAdmin from "@/views/SignUpForAdmin.vue";
+import AccountDetails from "@/views/AccountDetails.vue";
+import AboutUs from "@/views/AboutUs.vue";
 //route cho Book
 import AddBook from "@/views/AddBook.vue";
 import ListBook from "@/views/ListBook.vue";
 import BookDetails from "@/views/BookDetails.vue";
+import BookEdit from "@/views/BookEdit.vue";
 //route cho Nhà Xuất Bản
 import AddNXB from "@/views/AddNXB.vue";
 import ListNXB from "@/views/ListNXB.vue";
@@ -28,6 +31,11 @@ const routes = [
         component: BookHome,
     },
     {
+        path: "/about",
+        name: "about",
+        component: AboutUs,
+    },
+    {
         path: "/borrow",
         name: "borrow",
         component: BorrowBook,
@@ -43,9 +51,19 @@ const routes = [
         component: SignUp,
     },
     {
+        path: "/admin/signup",
+        name: "admin.signup",
+        component: SignUpForAdmin,
+    },
+    {
         path: "/addbook",
         name: "book.add",
         component: AddBook,
+    },
+    {
+        path: "/books/edit/:id",
+        name: "book.edit",
+        component: BookEdit,
     },
     {
         path: "/listbook",
@@ -58,9 +76,15 @@ const routes = [
         component: ListAccount,
     },
     {
-        path: "/edit/:id",
+        path: "/edit/account/:id",
         name: "account.edit",
         component: EditAccount,
+    },
+    {
+        path: "/account/:id",
+        name: "account.details",
+        component: AccountDetails,
+        props: true,
     },
     {
         path: "/listnxb",

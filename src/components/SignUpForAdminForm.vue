@@ -52,6 +52,15 @@
       <ErrorMessage name="sdt" class="error-feedback" />
     </div>
    
+    <div class="form-group">
+  <label for="nhanvien">Là nhân viên</label>
+  <Field as="select" name="nhanvien" class="form-control" v-model="contactLocal.nhanvien">
+    <option value="" disabled>Chọn loại tài khoản</option>
+    <option :value="true">Nhân viên</option>
+    <option :value="false">Đọc giả</option>
+  </Field>
+  <ErrorMessage name="nhanvien" class="error-feedback" />
+</div>
 
     <div class="form-group">
        <button class="btn_login2">
@@ -92,9 +101,9 @@ export default {
         .required("Password phải có giá trị.")
         .min(6, "Password phải ít nhất 6 ký tự.")
         .max(50, "Password có nhiều nhất 50 ký tự."),
-         nhanvien: yup
-          .boolean()
-       
+ nhanvien: yup
+    .boolean()
+    .required("Bạn phải chọn loại tài khoản.")
     });
 
     return {
@@ -105,7 +114,6 @@ export default {
   },
   methods: {
     submitContact() {
-       this.contactLocal.nhanvien = false;
       this.$emit("submit:contact", this.contactLocal);
     },
     deleteContact() {

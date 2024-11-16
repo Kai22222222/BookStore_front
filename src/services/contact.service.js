@@ -28,6 +28,9 @@ class ContactService {
     async findOne(filter) {
         return await this.Contact.findOne(filter);
     }
+    async findByName(username) {
+        return (await this.api.get(`/user/${username}`)).data;
+    }
     async checkLogIn(data, token) {
         return axios.put(`${API_URL}`, data, {
             headers: { 'Authorization': `Bearer ${token}` }

@@ -16,10 +16,10 @@
                          <div class="name_book">
                              {{ contact.diachi }}
                         </div> 
-                         <button @click.stop="goToDelete(contact._id)" class="btn_login" style="width: 30%; margin-top: 30px;">
+                         <button v-if="this.isNhanVien"  @click.stop="goToDelete(contact._id)" class="btn_login" style="width: 30%; margin-top: 30px;">
           Xóa
         </button>
-        <button @click.stop="goToEdit(contact._id)" class="btn_login" style="width: 30%;">
+        <button v-if="this.isNhanVien"  @click.stop="goToEdit(contact._id)" class="btn_login" style="width: 30%;">
           Sửa
         </button>
                     </div>
@@ -33,7 +33,8 @@ import BookCard from "@/components/BookCard2.vue";
 import InputSearch from "@/components/InputSearch.vue";
 import BookList from "@/components/BookList2.vue";
 import NXBService from "@/services/nxb.service";
-
+import ContactService from "@/services/contact.service"; 
+import { useTodoStore } from "@/store/todostore";
 export default {
 components: {
 BookCard,
@@ -43,6 +44,7 @@ BookList,
 // Đoạn mã xử lý đầy đủ sẽ trình bày bên dưới
 data() {
 return {
+isNhanVien: false, 
 contacts: [],
 activeIndex: -1,
 searchText: "",
@@ -55,8 +57,19 @@ watch: {
 searchText() {
 this.activeIndex = -1;
 },
+ username(newUsername) {
+            if (newUsername) {
+                this.checkNhanVien(newUsername); // Gọi hàm kiểm tra khi username thay đổi
+            } else {
+                this.isNhanVien = false; // Đặt lại khi người dùng đăng xuất
+            }
+        }
 },
 computed: {
+     username() {
+            const store = useTodoStore();
+            return store.username; // Lấy username từ Pinia store
+        },
 // Chuyển các đối tượng contact thành chuỗi để tiện cho tìm kiếm.
 contactStrings() {
 return this.contacts.map((contact) => {
@@ -80,6 +93,17 @@ return this.filteredContacts.length;
 },
 },
 methods: {
+    async checkNhanVien(username) {
+            try {
+                const response = await ContactService.findByName(username);
+                
+                this.isNhanVien = response[0].nhanvien; // Cập nhật trạng thái nhân viên
+                console.log( this.isNhanVien)
+            } catch (error) {
+                console.error("Error checking nhanvien:", error.message);
+                this.isNhanVien = false;
+            }
+        },
      async goToDelete(id) {
       try {
          
@@ -137,7 +161,9 @@ this.$router.push({ name: "book.login" });
 },
 mounted() {
 this.refreshList();
-
+if (this.username) {
+            this.checkNhanVien(this.username); // Kiểm tra ngay khi component được mount
+        }
 },
 };
 

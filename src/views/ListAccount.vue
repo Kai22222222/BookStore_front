@@ -9,7 +9,7 @@
         v-for="contact in contacts"
         :key="contact.id"
         class="book_trending_item2"
-        @click="goToNXBDetails(contact._id)"
+        @click="goToAccountDetails(contact._id)"
       >
         <div class="name_book">
           {{ contact.username }}
@@ -94,9 +94,9 @@ refreshList() {
 this.retrieveContacts();
 this.activeIndex = -1;
 },
-goToNXBDetails(bookId) {
+goToAccountDetails(bookId) {
         // Navigate to the book details page with the given bookId
-        this.$router.push({ name: "nxb.details", params: { id: bookId } });
+        this.$router.push({ name: "account.details", params: { id: bookId } });
     },
 async removeAllContacts() {
     

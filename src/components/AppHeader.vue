@@ -1,49 +1,57 @@
 <template>
     <header>
-        <h2 class="logo">CBOOKS</h2>
+       
+         <div class="navbar navigation " >
+            <div >
+                <router-link :to="{ name: 'contactbook' }" style="color: aliceblue;"> 
+                    <h2 >The BookWorm</h2> 
+                </router-link>
+            </div>
+         </div>
+        
         <nav class="navbar navigation">
             <div class="nav-item">
                 <router-link :to="{ name: 'contactbook' }" style="color: aliceblue;">
-                    Home
-                    <i class="fas fa-address-book"></i>
+                    Trang Chủ
+                   
                 </router-link>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" v-if="isNhanVien">
                 <router-link :to="{ name: 'account.list' }" style="color: aliceblue;">
-                    Account
-                    <i class="fas fa-address-book"></i>
+                    Tài Khoản
+                    
                 </router-link>
             </div>
             <div class="nav-item">
                 <router-link :to="{ name: 'book.list' }" style="color: aliceblue;">
-                    Books
-                    <i class="fas fa-address-book"></i>
+                    Sách
+                   
                 </router-link>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" v-if="isNhanVien">
                 <router-link :to="{ name: 'nxb.list' }" style="color: aliceblue;">
                     NXB
-                    <i class="fas fa-address-book"></i>
+                   
                 </router-link>
             </div>
             <div class="nav-item">
-                <router-link :to="{ name: 'contactbook' }" style="color: aliceblue;">
-                    About
-                    <i class="fas fa-address-book"></i>
+                <router-link :to="{ name: 'about' }" style="color: aliceblue;">
+                    Về Chúng Tôi
+                   
                 </router-link>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" v-if="isNhanVien">
                 <router-link :to="{ name: 'book.add' }" style="color: aliceblue;">
                     Thêm Sách
-                    <i class="fas fa-address-book"></i>
+                   
                 </router-link>
             </div>
             <div class="nav-item2">
                 <router-link v-if="!username" :to="{ name: 'book.login' }">
-                    <button class="btn_login">Login</button>
+                    <button class="btn_login">Đăng nhập</button>
                 </router-link>
                 <button v-else @click="logout" class="btn_login">
-                    Log out
+                   Đăng xuất
                 </button>
             </div>
         </nav>
@@ -51,20 +59,53 @@
 </template>
 
 <script>
-import { useTodoStore } from "@/store/todostore"; // Import the Pinia store
+import { useTodoStore } from "@/store/todostore"; // Import Pinia store
+import ContactService from "@/services/contact.service"; // Import service
 
 export default {
+    data() {
+        return {
+            isNhanVien: false ,// Trạng thái kiểm tra nhân viên
+             isMenuOpen: false, 
+        };
+    },
     computed: {
         username() {
-            const store = useTodoStore(); // Access the store
-            return store.username; // Return the username from the store
+            const store = useTodoStore();
+            return store.username; // Lấy username từ Pinia store
+        }
+    },
+    watch: {
+        username(newUsername) {
+            if (newUsername) {
+                this.checkNhanVien(newUsername); // Gọi hàm kiểm tra khi username thay đổi
+            } else {
+                this.isNhanVien = false; // Đặt lại khi người dùng đăng xuất
+            }
         }
     },
     methods: {
+        
+        async checkNhanVien(username) {
+            try {
+                const response = await ContactService.findByName(username);
+                console.log( response[0].nhanvien)
+                this.isNhanVien = response[0].nhanvien; // Cập nhật trạng thái nhân viên
+            } catch (error) {
+                console.error("Error checking nhanvien:", error.message);
+                this.isNhanVien = false;
+            }
+        },
         logout() {
             const store = useTodoStore();
-            store.clearUsername(); // Call the action to clear the username in the store and localStorage
+            store.clearUsername(); // Đăng xuất và xóa username
+        }
+    },
+    mounted() {
+        if (this.username) {
+            this.checkNhanVien(this.username); // Kiểm tra ngay khi component được mount
         }
     }
 };
+
 </script>

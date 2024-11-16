@@ -1,8 +1,10 @@
 <script>
 import AppHeader from "@/components/AppHeader.vue";
+import AppFooter from "@/components/AppFooter.vue";
 export default {
 components: {
 AppHeader,
+AppFooter,
 },
 };
 </script>
@@ -10,10 +12,14 @@ AppHeader,
   <div class="component1">
 <AppHeader />
 </div>
-<div class="container mt-3 pt-3 component2">
+<div class="space"></div>
+<div class="container component2" >
+  
 <router-view />
 </div>
-
+<div class="component1" >
+<AppFooter />
+</div>
 </template>
 <style>
 
